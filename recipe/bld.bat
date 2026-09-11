@@ -34,10 +34,16 @@ python tools/ci_build/build.py ^
     --build_wheel ^
     --config Release ^
     --update ^
-    --build ^
     --skip_submodule_sync ^
     %BUILD_ARGS%
 if errorlevel 1 exit 1
+
+:: TEMPORARY DEBUG: stop after CMake has generated the build tree and dump the
+:: post-build.bat that cmd.exe refuses to parse on -novec. Revert before merge.
+echo ===== BEGIN post-build.bat dump =====
+python "%RECIPE_DIR%\dump_postbuild.py"
+echo ===== END post-build.bat dump =====
+exit 1
 
 if "%cuda_compiler_version%"=="None" (
     python tools/ci_build/build.py --test  --config Release --cmake_generator Ninja --build_dir build-ci

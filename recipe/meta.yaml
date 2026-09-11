@@ -43,6 +43,11 @@ build:
   number: {{ build }}
   # don't build cuda versions with novec
   skip: true  # [ (cuda_compiler_version != "None") and suffix == "-novec"]
+  # TEMPORARY DEBUG: keep only win CPU py3.11 (vec + novec) while chasing the
+  # post-build.bat "(set was unexpected at this time." failure. Revert before merge.
+  skip: true  # [not win]
+  skip: true  # [py != 311]
+  skip: true  # [cuda_compiler_version != "None"]
   # Since 1.11, power9 seems to be required.
   skip: true  # [ppc64le]
   skip: true  # [osx and x86_64]
