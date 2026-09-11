@@ -20,8 +20,6 @@ if "%cuda_compiler_version%"=="None" (
     )
 )
 
-if "%PKG_NAME%"=="onnxruntime-novec" set "onnxruntime_BUILD_UNIT_TESTS=OFF"
-
 :: Since 1.29.0 telemetry is opt-out rather than opt-in; a conda-forge package should
 :: not report usage to Microsoft, so it is disabled explicitly on every platform.
 :: We set CMAKE_DISABLE_FIND_PACKAGE_Protobuf=ON as currently we do not want to use
