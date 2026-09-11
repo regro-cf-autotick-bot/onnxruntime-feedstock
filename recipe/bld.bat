@@ -20,6 +20,8 @@ if "%cuda_compiler_version%"=="None" (
     )
 )
 
+if "%PKG_NAME%"=="onnxruntime-novec" set "onnxruntime_BUILD_UNIT_TESTS=OFF"
+
 :: Since 1.29.0 telemetry is opt-out rather than opt-in; a conda-forge package should
 :: not report usage to Microsoft, so it is disabled explicitly on every platform.
 :: We set CMAKE_DISABLE_FIND_PACKAGE_Protobuf=ON as currently we do not want to use
@@ -34,18 +36,12 @@ python tools/ci_build/build.py ^
     --build_wheel ^
     --config Release ^
     --update ^
+    --build ^
     --skip_submodule_sync ^
     %BUILD_ARGS%
 if errorlevel 1 exit 1
 
-:: TEMPORARY DEBUG: stop after CMake has generated the build tree and dump the
-:: post-build.bat that cmd.exe refuses to parse on -novec. Revert before merge.
-echo ===== BEGIN post-build.bat dump =====
-python "%RECIPE_DIR%\dump_postbuild.py"
-echo ===== END post-build.bat dump =====
-exit 1
-
-if "%cuda_compiler_version%"=="None" (
+if "%onnxruntime_BUILD_UNIT_TESTS%"=="ON" (
     python tools/ci_build/build.py --test  --config Release --cmake_generator Ninja --build_dir build-ci
     if errorlevel 1 exit 1
 )
