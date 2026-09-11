@@ -70,8 +70,6 @@ requirements:
     {% endif %}
     - cmake <4
     - ninja
-    # we need protoc in the build environment for cross compilations
-    - libprotobuf 3.21
   host:
     - python
     - pip
